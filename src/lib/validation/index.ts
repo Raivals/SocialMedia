@@ -1,5 +1,12 @@
 import * as z from "zod"
-
+// Conditions for the form
 export const SignupValidation = z.object({
-  username: z.string().min(2).max(50),
+  name: z.string().min(2, { message: "Nom trop court." }),
+  username: z
+    .string()
+    .min(2, { message: "Le pseudo doit faire au moins 2 caractères." }),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, { message: "Le mot de passe doit contenir 2 caractères minimum." }),
 })
