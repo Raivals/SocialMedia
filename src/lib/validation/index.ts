@@ -8,5 +8,5 @@ export const SignupValidation = z.object({
   email: z.string().email(),
   password: z
     .string()
-    .min(8, { message: "Le mot de passe doit contenir 2 caractères minimum." }),
+    .min(8, { message: "Le mot de passe doit contenir 8 caractères minimum." }),
 })

@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form"
 import { SignupValidation } from "@/lib/validation"
 import { z } from "zod"
 import Loader from "@/components/shared/Loader"
+import { createUserAccount } from "@/lib/appwrite/api"
 
 const SignupForm = () => {
   // Fake field for a loader when you submit the form
@@ -34,7 +35,9 @@ const SignupForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     // create the user
-    //const newUser = await createUserAccount(values)
+    const newUser = await createUserAccount(values)
+
+    console.log(newUser)
   }
 
   return (
