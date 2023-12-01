@@ -2,6 +2,7 @@ import { ID } from "appwrite"
 import { INewUser } from "@/types"
 import { account, appwriteConfig, avatars, databases } from "./config"
 
+// Connection to the database
 export async function createUserAccount(user: INewUser) {
   try {
     const newAccount = await account.create(
