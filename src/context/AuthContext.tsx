@@ -1,5 +1,8 @@
+import { getCurrentUser } from "@/lib/appwrite/api"
 import { IContextType, IUser } from "@/types"
-import { createContext, useContex, useEffect, useState } from "react"
+import { truncate } from "fs/promises"
+import { createContext, useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const INITIAL_USER = {
   id: "",
@@ -29,7 +32,55 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  return <AuthContext.Provider></AuthContext.Provider>
+  const navigate = useNavigate()
+
+  const checkAuthUser = async () => {
+    try {
+      const currentAccount = await getCurrentUser()
+
+      if (currentAccount) {
+        setUser({
+          id: currentAccount.$id,
+          name: currentAccount.name,
+          username: currentAccount.username,
+          email: currentAccount.email,
+          imageUrl: currentAccount.imageUrl,
+          bio: currentAccount.bio,
+        })
+
+        setIsAuthenticated(true)
+        return truncate
+      }
+      return false
+    } catch (error) {
+      return false
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (
+      localStorage.getItem("cookieFallback") === "[]" ||
+      localStorage.getItem("cookieFallback") === null
+    )
+      navigate("/sign-in")
+
+    checkAuthUser()
+  }, [])
+
+  const value = {
+    user,
+    setUser,
+    isLoading,
+    isAuthenticated,
+    setIsAuthenticated,
+    checkAuthUser,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export default AuthProvider
+
+export const useUserContext = () => useContext(AuthContext)
