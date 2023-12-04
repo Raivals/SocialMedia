@@ -18,14 +18,21 @@ import { SignupValidation } from "@/lib/validation"
 import { z } from "zod"
 import Loader from "@/components/shared/Loader"
 
-import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutation"
+import {
+  useCreateUserAccount,
+  useSingInAccount,
+} from "@/lib/react-query/queriesAndMutation"
 
 const SignupForm = () => {
   const { toast } = useToast()
   // Fake field for a loader when you submit the form
   // Self made Hook
-  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
+  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
     useCreateUserAccount()
+
+  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
+    useSingInAccount()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -48,7 +55,16 @@ const SignupForm = () => {
       })
     }
     // signup the user into a session
-    // const session = await signInAccount()
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    })
+
+    if (!session) {
+      return toast({ title: "La connection a échoué, Veuillez réésayer." })
+    }
+
+    // Store the session in the react context
   }
 
   return (
