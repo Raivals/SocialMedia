@@ -17,12 +17,15 @@ import { useForm } from "react-hook-form"
 import { SignupValidation } from "@/lib/validation"
 import { z } from "zod"
 import Loader from "@/components/shared/Loader"
-import { createUserAccount } from "@/lib/appwrite/api"
+
+import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutation"
 
 const SignupForm = () => {
   const { toast } = useToast()
   // Fake field for a loader when you submit the form
-  const isLoading = false
+  // Self made Hook
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
+    useCreateUserAccount()
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -116,7 +119,7 @@ const SignupForm = () => {
           />
           {/* Allow a loading while submit the form */}
           <Button type="submit" className="shad-button_primary">
-            {isLoading ? (
+            {isCreatingUser ? (
               <div className="gap-2 flex-center">
                 {" "}
                 <Loader />
