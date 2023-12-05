@@ -26,14 +26,14 @@ import { useUserContext } from "@/context/AuthContext"
 
 const SignupForm = () => {
   const { toast } = useToast()
-  const { checkAuthUser, iLoading: isUserLoading } = useUserContext()
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
   const navigate = useNavigate()
   // Fake field for a loader when you submit the form
   // Self made Hook
-  const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
     useCreateUserAccount()
 
-  const { mutateAsync: signInAccount, isLoading: isSigningIn } =
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSingInAccount()
 
   // 1. Define your form.
@@ -147,7 +147,7 @@ const SignupForm = () => {
           />
           {/* Allow a loading while submit the form */}
           <Button type="submit" className="shad-button_primary">
-            {isCreatingUser ? (
+            {isCreatingAccount ? (
               <div className="gap-2 flex-center">
                 {" "}
                 <Loader />

@@ -1,6 +1,5 @@
 import { getCurrentUser } from "@/lib/appwrite/api"
 import { IContextType, IUser } from "@/types"
-import { truncate } from "fs/promises"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -49,7 +48,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         })
 
         setIsAuthenticated(true)
-        return truncate
+        return true
       }
       return false
     } catch (error) {
@@ -61,8 +60,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (
-      localStorage.getItem("cookieFallback") === "[]" ||
-      localStorage.getItem("cookieFallback") === null
+      localStorage.getItem("cookieFallback") === "[]"
+      //localStorage.getItem("cookieFallback") === null
     )
       navigate("/sign-in")
 
