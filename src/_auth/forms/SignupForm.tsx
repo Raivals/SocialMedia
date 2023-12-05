@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 
 import {
@@ -22,9 +22,12 @@ import {
   useCreateUserAccount,
   useSingInAccount,
 } from "@/lib/react-query/queriesAndMutation"
+import { useUserContext } from "@/context/AuthContext"
 
 const SignupForm = () => {
   const { toast } = useToast()
+  const { checkAuthUser, iLoading: isUserLoading } = useUserContext()
+  const navigate = useNavigate()
   // Fake field for a loader when you submit the form
   // Self made Hook
   const { mutateAsync: createUserAccount, isLoading: isCreatingAccount } =
@@ -65,6 +68,15 @@ const SignupForm = () => {
     }
 
     // Store the session in the react context
+    const isLoggedIn = await checkAuthUser()
+
+    if (isLoggedIn) {
+      form.reset()
+
+      navigate("/")
+    } else {
+      return toast({ title: "Connexion échoué. Veuillez réésayer." })
+    }
   }
 
   return (
