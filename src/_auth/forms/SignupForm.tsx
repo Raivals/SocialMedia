@@ -165,7 +165,7 @@ const SignupForm = () => {
             to="/sign-in"
             className="ml-1 text-primary-500 text-small-semibold"
           >
-            Log in
+            Se connecter
           </Link>
         </form>
       </div>
