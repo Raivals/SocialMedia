@@ -18,7 +18,7 @@ import { SigninValidation } from "@/lib/validation"
 import { z } from "zod"
 import Loader from "@/components/shared/Loader"
 
-import { useSingInAccount } from "@/lib/react-query/queriesAndMutation"
+import { useSignInAccount } from "@/lib/react-query/queriesAndMutation"
 import { useUserContext } from "@/context/AuthContext"
 
 const SigninForm = () => {
@@ -28,7 +28,7 @@ const SigninForm = () => {
   // Fake field for a loader when you submit the form
   // Self made Hook
 
-  const { mutateAsync: signInAccount } = useSingInAccount()
+  const { mutateAsync: signInAccount } = useSignInAccount()
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SigninValidation>>({
