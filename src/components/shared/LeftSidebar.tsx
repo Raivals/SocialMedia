@@ -1,9 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { useSignOutAccount } from "@/lib/react-query/queriesAndMutation"
 import { useEffect } from "react"
 import { useUserContext } from "@/context/AuthContext"
+import { INavLink } from "@/types"
+import { sidebarLinks } from "@/constants"
 
 const LeftSidebar = () => {
   const { mutate: signOut, isSuccess } = useSignOutAccount()
@@ -36,7 +38,25 @@ const LeftSidebar = () => {
             <p className="small-regular text-light-3">@{user.username}</p>
           </div>
         </Link>
-        <ul className="flex flex-col gap-6"></ul>
+        <ul className="flex flex-col gap-6">
+          {sidebarLinks.map((link: INavLink) => {
+            return (
+              <li key={link.label} className="leftsidebar-link">
+                <NavLink
+                  to={link.route}
+                  className="flex items-center gap-4 p-4 "
+                >
+                  <img
+                    src={link.imgURL}
+                    alt={link.label}
+                    className="group-hover:invert-white"
+                  />
+                  {link.label}
+                </NavLink>
+              </li>
+            )
+          })}
+        </ul>
       </div>
     </nav>
   )
